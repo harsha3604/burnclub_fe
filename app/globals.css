@@ -1,0 +1,163 @@
+:root {
+  /* ---- Color tokens ---- */
+  --ink: #15161a;        /* near-black, primary dark surface */
+  --charcoal: #222329;   /* elevated dark surface (cards on ink) */
+  --chalk: #f6f4ef;      /* light surface, warm off-white */
+  --steel: #83868d;      /* muted text / secondary */
+  --steel-line: #35363c; /* hairline on dark */
+  --ember: #ff4f2c;      /* primary accent - energy, CTAs */
+  --ember-dim: #c73b1e;  /* pressed / hover state of ember */
+  --volt: #d4ff3f;       /* secondary accent, used sparingly for highlights */
+
+  /* ---- Type ---- */
+  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
+  --font-body: var(--font-worksans), "Segoe UI", sans-serif;
+  --font-mono: var(--font-spacemono), "Courier New", monospace;
+
+  /* ---- Layout ---- */
+  --maxw: 1180px;
+  --gutter: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--chalk);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.02;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Reusable diagonal stripe divider - the site's signature motif,
+   evokes lane markings / gym floor tape. */
+.stripe-divider {
+  height: 10px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--ember) 0,
+    var(--ember) 18px,
+    var(--ink) 18px,
+    var(--ink) 36px
+  );
+}
+
+.stripe-divider--volt {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--volt) 0,
+    var(--volt) 18px,
+    var(--ink) 18px,
+    var(--ink) 36px
+  );
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 30px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  border: 2px solid transparent;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--ember);
+  color: var(--chalk);
+}
+
+.btn-primary:hover {
+  background: var(--ember-dim);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn-outline:hover {
+  background: var(--ink);
+  color: var(--chalk);
+}
+
+.btn-outline--light {
+  color: var(--chalk);
+  border-color: var(--chalk);
+}
+
+.btn-outline--light:hover {
+  background: var(--chalk);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

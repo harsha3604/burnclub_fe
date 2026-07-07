@@ -1,0 +1,140 @@
+.header {
+  background: var(--ink);
+  color: var(--chalk);
+}
+
+.headerInner {
+  padding: 56px 0 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.h1 {
+  font-size: 44px;
+  color: var(--chalk);
+}
+
+@media (min-width: 640px) {
+  .h1 {
+    font-size: 58px;
+  }
+}
+
+.lead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--steel);
+}
+
+.body {
+  padding: 56px 0 96px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 860px) {
+  .grid {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 48px;
+  }
+}
+
+.socialList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.socialRow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 4px;
+  border-bottom: 1px solid #e4e1d8;
+  transition: gap 0.15s ease, color 0.15s ease;
+}
+
+.socialRow:hover {
+  gap: 24px;
+  color: var(--ember);
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  flex-shrink: 0;
+}
+
+.socialRow:hover .socialIcon {
+  border-color: var(--ember);
+}
+
+.socialText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.socialLabel {
+  font-family: var(--font-display);
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.socialHandle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--steel);
+}
+
+.arrow {
+  font-size: 18px;
+}
+
+.infoCard {
+  background: var(--charcoal);
+  color: var(--chalk);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: fit-content;
+}
+
+.infoTitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-top: 18px;
+}
+
+.infoTitle:first-child {
+  margin-top: 0;
+}
+
+.infoLine {
+  font-size: 15px;
+  color: var(--steel);
+}
+
+.hr {
+  height: 1px;
+  background: var(--steel-line);
+  margin: 12px 0 0;
+}

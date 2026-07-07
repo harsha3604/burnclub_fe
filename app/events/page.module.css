@@ -1,0 +1,147 @@
+.header {
+  background: var(--ink);
+  color: var(--chalk);
+}
+
+.headerInner {
+  padding: 56px 0 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.h1 {
+  font-size: 44px;
+  color: var(--chalk);
+}
+
+@media (min-width: 640px) {
+  .h1 {
+    font-size: 58px;
+  }
+}
+
+.lead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--steel);
+}
+
+.list {
+  padding: 56px 0 96px;
+}
+
+.listInner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 24px;
+  border: 1px solid #e4e1d8;
+  background: #fff;
+  position: relative;
+}
+
+@media (min-width: 720px) {
+  .card {
+    grid-template-columns: 100px 1fr auto;
+    align-items: center;
+    gap: 28px;
+  }
+}
+
+.dateChip {
+  background: var(--ink);
+  color: var(--chalk);
+  width: 76px;
+  height: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: var(--font-mono);
+  border-left: 4px solid var(--ember);
+}
+
+.dateDay {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dateMonth {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--steel);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  grid-column: 2 / 3;
+}
+
+@media (min-width: 720px) {
+  .cardBody {
+    grid-column: auto;
+  }
+}
+
+.cardTitle {
+  font-size: 22px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--steel);
+  text-transform: uppercase;
+}
+
+.metaDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ember);
+}
+
+.cardCopy {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--steel);
+  max-width: 56ch;
+}
+
+.cardAction {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 720px) {
+  .cardAction {
+    grid-column: auto;
+  }
+}
+
+.cardAction .btn,
+.cardAction a {
+  width: 100%;
+}
+
+@media (min-width: 720px) {
+  .cardAction a {
+    width: auto;
+  }
+}

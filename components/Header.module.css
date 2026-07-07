@@ -1,0 +1,155 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  border-bottom: 1px solid var(--steel-line);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--chalk);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.logoMark {
+  width: 12px;
+  height: 12px;
+  background: var(--ember);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.logoSub {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--steel);
+  text-transform: uppercase;
+}
+
+@media (min-width: 640px) {
+  .logoSub {
+    display: inline;
+  }
+}
+
+.navDesktop {
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .navDesktop {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.navLink {
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--steel);
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.navLink:hover {
+  color: var(--chalk);
+}
+
+.navLinkActive {
+  color: var(--chalk);
+  border-color: var(--ember);
+}
+
+/* Hamburger */
+.menuBtn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+@media (min-width: 860px) {
+  .menuBtn {
+    display: none;
+  }
+}
+
+.bun {
+  height: 2px;
+  width: 100%;
+  background: var(--chalk);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.bunOpenTop {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.bunOpenMid {
+  opacity: 0;
+}
+
+.bunOpenBot {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile nav panel */
+.navMobile {
+  max-height: 0;
+  overflow: hidden;
+  background: var(--ink);
+  border-bottom: 1px solid transparent;
+  transition: max-height 0.3s ease;
+}
+
+@media (min-width: 860px) {
+  .navMobile {
+    display: none;
+  }
+}
+
+.navMobileOpen {
+  max-height: 260px;
+  border-bottom-color: var(--steel-line);
+}
+
+.navMobileLink {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px var(--gutter);
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--chalk);
+  border-top: 1px solid var(--steel-line);
+  text-transform: uppercase;
+}
+
+.navMobileIndex {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ember);
+}

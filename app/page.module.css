@@ -1,0 +1,239 @@
+/* ---------- Hero ---------- */
+.hero {
+  background: var(--ink);
+  color: var(--chalk);
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 40px;
+  padding: 56px 0 64px;
+}
+
+@media (min-width: 860px) {
+  .heroInner {
+    grid-template-columns: 1.15fr 0.85fr;
+    padding: 88px 0 96px;
+  }
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.h1 {
+  font-size: 48px;
+  color: var(--chalk);
+}
+
+@media (min-width: 560px) {
+  .h1 {
+    font-size: 64px;
+  }
+}
+
+@media (min-width: 860px) {
+  .h1 {
+    font-size: 76px;
+  }
+}
+
+.lead {
+  max-width: 46ch;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--steel);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+/* Weight-plate motif, drawn in pure CSS - the hero's signature graphic */
+.heroGraphic {
+  position: relative;
+  height: 220px;
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .heroGraphic {
+    display: block;
+  }
+}
+
+.plate {
+  position: absolute;
+  right: 20px;
+  top: 0;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #3a3b41, var(--charcoal) 70%);
+  border: 10px solid var(--ember);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plateSmall {
+  position: absolute;
+  right: 150px;
+  top: 90px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #3a3b41, var(--charcoal) 70%);
+  border: 8px solid var(--volt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plateHole {
+  width: 34%;
+  height: 34%;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+/* ---------- Stats ---------- */
+.stats {
+  background: var(--charcoal);
+  color: var(--chalk);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--steel-line);
+}
+
+@media (min-width: 720px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.statCard {
+  background: var(--charcoal);
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statUnit {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ember);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 40px;
+  text-transform: uppercase;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: var(--steel);
+}
+
+/* ---------- About / Features ---------- */
+.about {
+  padding: 88px 0;
+}
+
+.aboutInner {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.aboutHead {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.h2 {
+  font-size: 34px;
+}
+
+@media (min-width: 640px) {
+  .h2 {
+    font-size: 42px;
+  }
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 640px) {
+  .featureGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.featureCard {
+  border-top: 3px solid var(--ink);
+  padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.featureIndex {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ember);
+}
+
+.featureTitle {
+  font-size: 22px;
+}
+
+.featureCopy {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--steel);
+  max-width: 42ch;
+}
+
+/* ---------- CTA banner ---------- */
+.cta {
+  background: var(--ember);
+  color: var(--chalk);
+}
+
+.ctaInner {
+  padding: 64px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  align-items: flex-start;
+}
+
+.ctaHeading {
+  font-size: 30px;
+  color: var(--ink);
+}
+
+@media (min-width: 640px) {
+  .ctaHeading {
+    font-size: 40px;
+  }
+}
