@@ -2,6 +2,7 @@ import { Anton, Work_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { AuthProvider } from "./context/context";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -38,7 +39,7 @@ export default function RootLayout({ children }) {
     >
       <body>
         <Header />
-        <main>{children}</main>
+        <AuthProvider>{children}</AuthProvider>
         <Footer />
       </body>
     </html>

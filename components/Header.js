@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Events" },
   { href: "/contact", label: "Contact Us" },
+  { href: "/login", label: "Login" },
 ];
 
 export default function Header() {
@@ -23,7 +24,11 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={`container ${styles.bar}`}>
-        <Link href="/" className={styles.logo} aria-label="Forge Athletic Club home">
+        <Link
+          href="/"
+          className={styles.logo}
+          aria-label="Forge Athletic Club home"
+        >
           <span className={styles.logoMark} aria-hidden="true" />
           FORGE<span className={styles.logoSub}>ATHLETIC CLUB</span>
         </Link>
