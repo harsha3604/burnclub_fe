@@ -1,4 +1,6 @@
 import styles from "./page.module.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export const metadata = {
   title: "Events | Forge Athletic Club",
@@ -67,6 +69,7 @@ const EVENTS = [
 export default function EventsPage() {
   return (
     <>
+      <Header />
       <section className={styles.header}>
         <div className={`container ${styles.headerInner}`}>
           <span className="eyebrow">What's on</span>
@@ -112,6 +115,7 @@ export default function EventsPage() {
           ))}
         </div>
       </section>
+      <Footer />
     </>
   );
 }

@@ -7,7 +7,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/context";
 import styles from "./page.module.css";
-
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -43,6 +44,8 @@ export default function LoginPage() {
           },
         );
 
+        console.log(response.ok);
+
         if (response.ok) {
           const data = await response.json();
           setUser(data.user);
@@ -60,6 +63,7 @@ export default function LoginPage() {
 
   return (
     <>
+      <Header />
       <div className={styles.loginContainer}>
         <div className={styles.loginCard}>
           <div className={styles.heading}>
@@ -155,6 +159,7 @@ export default function LoginPage() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

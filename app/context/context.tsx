@@ -29,11 +29,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/users/logout`, {
+      await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_URL}api/users/logout`, {
         method: "POST",
         credentials: "include", // important to send the cookie
       });
-      window.location.href = "/login";
       setUser(null);
     } catch (err) {
       console.error("Logout failed:", err);
@@ -44,9 +43,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Run on mount to restore user from cookie
     const restoreUser = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/users/verify", {
-          credentials: "include",
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_FRONTEND_URL}api/users/verify`,
+          {
+            credentials: "include",
+          },
+        );
 
         if (res.ok) {
           const data = await res.json();

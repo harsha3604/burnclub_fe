@@ -1,5 +1,7 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import Header from "../app/components/Header";
+import Footer from "../app/components/Footer";
 
 const FEATURES = [
   {
@@ -30,6 +32,7 @@ const STATS = [
 export default function HomePage() {
   return (
     <>
+      <Header />
       <section className={styles.hero}>
         <div className={`container ${styles.heroInner}`}>
           <div className={styles.heroText}>
@@ -41,9 +44,9 @@ export default function HomePage() {
             </h1>
             <p className={styles.lead}>
               Forge is a no-frills training club for people who show up on the
-              hard days. We run a full barbell floor, daily group classes, and
-              a coaching staff that actually knows your name — whether you
-              walked in yesterday or five years ago.
+              hard days. We run a full barbell floor, daily group classes, and a
+              coaching staff that actually knows your name — whether you walked
+              in yesterday or five years ago.
             </p>
             <div className={styles.heroActions}>
               <Link href="/events" className="btn btn-primary">
@@ -109,6 +112,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+      <Footer />
     </>
   );
 }

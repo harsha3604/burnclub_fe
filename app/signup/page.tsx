@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@headlessui/react";
 import styles from "./page.module.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 //random comment
 
@@ -82,6 +84,7 @@ export default function SignupPage() {
   };
   return (
     <>
+      <Header />
       <div className={styles.signupContainer}>
         <div className={styles.signupCard}>
           <div className={styles.heading}>
@@ -181,6 +184,7 @@ export default function SignupPage() {
           </div>
         )}
       </div>
+      <Footer />
     </>
   );
 }
