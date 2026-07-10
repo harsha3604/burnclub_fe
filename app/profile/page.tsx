@@ -48,6 +48,11 @@ export default function Profile() {
                 <span className={styles.label}>Email</span>
                 <span className={styles.value}>{user.email}</span>
               </div>
+
+              <div className={styles.row}>
+                <span className={styles.label}>Role</span>
+                <span className={styles.value}>{user.role}</span>
+              </div>
             </div>
           </div>
         </div>
