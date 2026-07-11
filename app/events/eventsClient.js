@@ -8,7 +8,6 @@ import { useAuth } from "../context/context"; // adjust path if different
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import EventModal from "../components/EventModal";
-import ConfirmModal from "../components/ConfirmModal";
 
 const API_BASE = process.env.NEXT_PUBLIC_FRONTEND_URL || "";
 
@@ -70,7 +69,6 @@ export default function EventsClient() {
 
   //load events from the API
   const loadEvents = useCallback(async (page) => {
-    console.log("loadEvents called");
     setLoading(true);
     setError(null);
     try {
@@ -79,7 +77,7 @@ export default function EventsClient() {
       setTotalPages(data.totalPages || 1);
       setTotalEvents(data.totalEvents || 0);
       setCurrentPage(data.currentPage || page);
-      console.log("Events:", data.events);
+      data.events.forEach((e) => console.log(e.title, e.isRegistered));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -267,7 +265,12 @@ export default function EventsClient() {
                         </span>
                       </Link>
                       <span className={styles.metaDot} aria-hidden="true" />
-                      <span>Slots: {ev.capacity}</span>
+                      <span>
+                        {ev.registeredCount}/{ev.capacity} registered
+                      </span>
+                      {/* <span>Slots: {ev.capacity}</span>
+                      <span className={styles.metaDot} aria-hidden="true" />
+                      <span>Remaining: {ev.seatsLeft}</span> */}
                     </div>
                     {/* {ev.description && (
                       <p className={styles.cardCopy}>{ev.description}</p>
@@ -280,13 +283,6 @@ export default function EventsClient() {
                     >
                       View
                     </button>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => openModal("register", ev)}
-                    >
-                      Register
-                    </button>
-
                     {user?.role === "founder" && (
                       <>
                         <button
@@ -304,6 +300,22 @@ export default function EventsClient() {
                         </button>
                       </>
                     )}
+                    {user?.role !== "founder" &&
+                      (ev.isRegistered ? (
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => openModal("deregister", ev)}
+                        >
+                          DeRegister
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => openModal("register", ev)}
+                        >
+                          Register
+                        </button>
+                      ))}
                   </div>
                 </article>
               );
@@ -359,7 +371,7 @@ export default function EventsClient() {
           try {
             await deleteEvent(id);
             closeModal();
-            loadEvents(currentPage);
+            await loadEvents(currentPage);
           } catch (err) {
             console.error(err);
             alert(err.message);
@@ -369,6 +381,7 @@ export default function EventsClient() {
           try {
             await registerEvent(id);
             closeModal();
+            await loadEvents(currentPage);
           } catch (err) {
             console.error(err);
             alert(err.message);
@@ -376,8 +389,9 @@ export default function EventsClient() {
         }}
         onDeRegister={async (id) => {
           try {
-            await deRegisterRevent(id);
+            await deRegisterEvent(id);
             closeModal();
+            await loadEvents(currentPage);
           } catch (err) {
             console.error(err);
             alert(err.message);

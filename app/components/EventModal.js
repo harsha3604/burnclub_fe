@@ -171,22 +171,39 @@ export default function EventModal({
 
         {mode === "register" && (
           <>
-            <div className={styles.backdrop}>
-              <div className={styles.modal}>
-                <h2>{event.title}</h2>
+            <h2>{event.title}</h2>
 
-                <p>{`Are you sure you want to register for "${event?.title}"?`}</p>
+            <p>{`Are you sure you want to register for "${event?.title}"?`}</p>
 
-                <div className={styles.actions}>
-                  <button className="btn" onClick={onClose}>
-                    Back
-                  </button>
+            <div className={styles.actions}>
+              <button className="btn btn-secondary" onClick={onClose}>
+                Back
+              </button>
 
-                  <button className="btn" onClick={onRegister}>
-                    Register
-                  </button>
-                </div>
-              </div>
+              <button
+                className="btn btn-primary"
+                onClick={() => onRegister(event.id)}
+              >
+                Register
+              </button>
+            </div>
+          </>
+        )}
+
+        {mode === "deregister" && (
+          <>
+            <h2>{event.title}</h2>
+            <p>{`Cancel your registration for "${event?.title}"?`}</p>
+            <div className={styles.actions}>
+              <button className="btn btn-secondary" onClick={onClose}>
+                Back
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => onDeRegister(event.id)}
+              >
+                Deregister
+              </button>
             </div>
           </>
         )}
