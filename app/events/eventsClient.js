@@ -8,6 +8,7 @@ import { useAuth } from "../context/context"; // adjust path if different
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import EventModal from "../components/EventModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 const API_BASE = process.env.NEXT_PUBLIC_FRONTEND_URL || "";
 
@@ -62,9 +63,10 @@ export default function EventsClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // state variables (read, update and delete modals)
+  // state variables (read, update, delete, register modals)
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [modalMode, setModalMode] = useState(null); // "view" | "edit" | "delete"
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   //load events from the API
   const loadEvents = useCallback(async (page) => {
@@ -165,6 +167,56 @@ export default function EventsClient() {
     }
   }
 
+  //Register Event
+  async function registerEvent(eventId) {
+    try {
+      const res = await fetch(
+        `${API_BASE}api/events/${eventId}/registrations`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          data.message || data.error || `Request failed (${res.status})`,
+        );
+      }
+
+      return data;
+    } catch (err) {
+      console.error("Failed to register for event:", err);
+      throw err;
+    }
+  }
+
+  //deRegister event
+  async function deRegisterEvent(eventId) {
+    try {
+      const res = await fetch(
+        `${API_BASE}api/events/${eventId}/registrations`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          data.message || data.error || `Request failed (${res.status})`,
+        );
+      }
+
+      return data;
+    } catch (err) {
+      console.error("Failed to register for event:", err);
+      throw err;
+    }
+  }
+
   return (
     <>
       <Header />
@@ -215,11 +267,11 @@ export default function EventsClient() {
                         </span>
                       </Link>
                       <span className={styles.metaDot} aria-hidden="true" />
-                      <span>Capacity: {ev.capacity}</span>
+                      <span>Slots: {ev.capacity}</span>
                     </div>
-                    {ev.description && (
+                    {/* {ev.description && (
                       <p className={styles.cardCopy}>{ev.description}</p>
-                    )}
+                    )} */}
                   </div>
                   <div className={styles.cardActions}>
                     <button
@@ -227,6 +279,12 @@ export default function EventsClient() {
                       onClick={() => openModal("view", ev)}
                     >
                       View
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => openModal("register", ev)}
+                    >
+                      Register
                     </button>
 
                     {user?.role === "founder" && (
@@ -302,6 +360,24 @@ export default function EventsClient() {
             await deleteEvent(id);
             closeModal();
             loadEvents(currentPage);
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+        }}
+        onRegister={async (id) => {
+          try {
+            await registerEvent(id);
+            closeModal();
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+        }}
+        onDeRegister={async (id) => {
+          try {
+            await deRegisterRevent(id);
+            closeModal();
           } catch (err) {
             console.error(err);
             alert(err.message);

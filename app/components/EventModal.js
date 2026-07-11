@@ -3,7 +3,16 @@
 import { useEffect, useState } from "react";
 import styles from "./EventModal.module.css";
 
-export default function EventModal({ mode, event, onClose, onSave, onDelete }) {
+export default function EventModal({
+  mode,
+  event,
+  onClose,
+  onSave,
+  onDelete,
+  onCancel,
+  onRegister,
+  onDeRegister,
+}) {
   const [form, setForm] = useState({
     title: "",
     date: "",
@@ -156,6 +165,28 @@ export default function EventModal({ mode, event, onClose, onSave, onDelete }) {
               <button className="btn btn-secondary" onClick={onClose}>
                 Cancel
               </button>
+            </div>
+          </>
+        )}
+
+        {mode === "register" && (
+          <>
+            <div className={styles.backdrop}>
+              <div className={styles.modal}>
+                <h2>{event.title}</h2>
+
+                <p>{`Are you sure you want to register for "${event?.title}"?`}</p>
+
+                <div className={styles.actions}>
+                  <button className="btn" onClick={onClose}>
+                    Back
+                  </button>
+
+                  <button className="btn" onClick={onRegister}>
+                    Register
+                  </button>
+                </div>
+              </div>
             </div>
           </>
         )}
