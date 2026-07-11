@@ -5,28 +5,39 @@ import styles from "./page.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useAuth } from "../context/context"; // adjust path if different
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import EventModal from "../components/EventModal";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
+const API_BASE = process.env.NEXT_PUBLIC_FRONTEND_URL || "";
 
+// Helper function to fetch data from the API
 async function apiFetch(path, options = {}) {
-  const res = await fetch(`${API_BASE}/api/events/`, {
+  console.log(`${API_BASE}${path}`);
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: "include",
     ...options,
-    credentials: "include", // send the auth cookie, matches AuthContext
     headers: {
       "Content-Type": "application/json",
-      ...options.headers,
+      ...(options.headers || {}),
     },
   });
 
   const data = await res.json().catch(() => ({}));
+
+  console.log(data);
+
   if (!res.ok) {
     throw new Error(
       data.message || data.error || `Request failed (${res.status})`,
     );
   }
+
   return data;
 }
 
+//spit the date into day, month, and time for display
 function splitDate(dateStr) {
   const d = new Date(dateStr);
   const day = String(d.getDate()).padStart(2, "0");
@@ -39,8 +50,11 @@ function splitDate(dateStr) {
 }
 
 export default function EventsClient() {
+  //routing and user
+  const router = useRouter();
   const { user, loading: authLoading } = useAuth();
 
+  //state variables for events and pagination
   const [events, setEvents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -48,16 +62,22 @@ export default function EventsClient() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // state variables (read, update and delete modals)
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [modalMode, setModalMode] = useState(null); // "view" | "edit" | "delete"
+
+  //load events from the API
   const loadEvents = useCallback(async (page) => {
+    console.log("loadEvents called");
     setLoading(true);
     setError(null);
     try {
-      const data = await apiFetch(`/api/events?page=${page}`);
+      const data = await apiFetch(`api/events?page=${page}`);
       setEvents(data.events || []);
       setTotalPages(data.totalPages || 1);
       setTotalEvents(data.totalEvents || 0);
       setCurrentPage(data.currentPage || page);
-      console.log("loaded", events);
+      console.log("Events:", data.events);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -68,14 +88,83 @@ export default function EventsClient() {
   useEffect(() => {
     // Wait for auth to resolve first since /events requires verifyLogin
     if (!authLoading) {
+      console.log("About to load events");
       loadEvents(1);
     }
   }, [authLoading, loadEvents]);
 
+  //pagination handler
   function goToPage(page) {
     if (page < 1 || page > totalPages || page === currentPage) return;
     loadEvents(page);
   }
+
+  //close and open modal handlers
+  const openModal = (mode, event) => {
+    setModalMode(mode);
+    setSelectedEvent(event);
+  };
+
+  const closeModal = () => {
+    setModalMode(null);
+    setSelectedEvent(null);
+  };
+
+  // Update Event
+  async function updateEvent(eventId, eventData) {
+    try {
+      const res = await fetch(`${API_BASE}api/events/${eventId}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventData),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      console.log("Status:", res.status);
+      console.log("Data:", data);
+
+      if (!res.ok) {
+        throw new Error(
+          data.message || data.error || `Request failed (${res.status})`,
+        );
+      }
+
+      return data;
+    } catch (err) {
+      console.error("Failed to update event:", err);
+      throw err;
+    }
+  }
+
+  // Delete Event
+  async function deleteEvent(eventId) {
+    try {
+      const res = await fetch(`${API_BASE}api/events/${eventId}`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(
+          data.message || data.error || `Request failed (${res.status})`,
+        );
+      }
+
+      return data;
+    } catch (err) {
+      console.error("Failed to delete event:", err);
+      throw err;
+    }
+  }
+
   return (
     <>
       <Header />
@@ -103,40 +192,62 @@ export default function EventsClient() {
             !loading &&
             !error &&
             events.map((ev) => {
+              const { day, month, time } = splitDate(ev.date);
               return (
-                <>
-                  <article key={ev.id} className={styles.card}>
-                    <div className={styles.dateChip}>
-                      <span className={styles.dateDay}>{day}</span>
-                      <span className={styles.dateMonth}>{month}</span>
-                    </div>
+                <article key={ev.id} className={styles.card}>
+                  <div className={styles.dateChip}>
+                    <span className={styles.dateDay}>{day}</span>
+                    <span className={styles.dateMonth}>{month}</span>
+                  </div>
 
-                    <div className={styles.cardBody}>
-                      <h2 className={styles.cardTitle}>{ev.title}</h2>
-                      <div className={styles.metaRow}>
-                        <span>{time}</span>
-                        <span className={styles.metaDot} aria-hidden="true" />
-                        <span>{ev.location}</span>
-                        <span className={styles.metaDot} aria-hidden="true" />
-                        <span>Capacity: {ev.capacity}</span>
-                      </div>
-                      {ev.description && (
-                        <p className={styles.cardCopy}>{ev.description}</p>
-                      )}
-                    </div>
-                    {ev.locationLink && (
-                      <div
-                        className={styles.cardAction}
+                  <div className={styles.cardBody}>
+                    <h2 className={styles.cardTitle}>{ev.title}</h2>
+                    <div className={styles.metaRow}>
+                      <span>{time}</span>
+                      <span className={styles.metaDot} aria-hidden="true" />
+                      <Link
                         href={ev.locationLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn btn-primary"
                       >
-                        <a>Map</a>
-                      </div>
+                        <span>
+                          <u>{ev.location}</u>
+                        </span>
+                      </Link>
+                      <span className={styles.metaDot} aria-hidden="true" />
+                      <span>Capacity: {ev.capacity}</span>
+                    </div>
+                    {ev.description && (
+                      <p className={styles.cardCopy}>{ev.description}</p>
                     )}
-                  </article>
-                </>
+                  </div>
+                  <div className={styles.cardActions}>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => openModal("view", ev)}
+                    >
+                      View
+                    </button>
+
+                    {user?.role === "founder" && (
+                      <>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => openModal("edit", ev)}
+                        >
+                          Update
+                        </button>
+
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => openModal("delete", ev)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </article>
               );
             })}
           {!authLoading && !loading && !error && totalPages > 1 && (
@@ -157,9 +268,9 @@ export default function EventsClient() {
               >
                 ← Prev
               </button>
-              <span>
+              {/* <span>
                 Page {currentPage} of {totalPages} ({totalEvents} events)
-              </span>
+              </span> */}
               <button
                 type="button"
                 className="btn btn-secondary"
@@ -172,6 +283,31 @@ export default function EventsClient() {
           )}
         </div>
       </section>
+      <EventModal
+        mode={modalMode}
+        event={selectedEvent}
+        onClose={closeModal}
+        onSave={async (form) => {
+          try {
+            await updateEvent(selectedEvent.id, form);
+            closeModal();
+            loadEvents(currentPage);
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+        }}
+        onDelete={async (id) => {
+          try {
+            await deleteEvent(id);
+            closeModal();
+            loadEvents(currentPage);
+          } catch (err) {
+            console.error(err);
+            alert(err.message);
+          }
+        }}
+      />
       <Footer />
     </>
   );
