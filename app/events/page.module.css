@@ -151,3 +151,53 @@
     width: auto;
   }
 }
+
+
+.addEventBtn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  z-index: 50;
+}
+
+.addEventBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* once the footer sentinel is in view, switch to absolute so the
+   button scrolls up and out of view along with the page instead of
+   sitting on top of the footer */
+.addEventBtnDocked {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+}
+
+.emptyEvents {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;
+    padding: 2rem 0rem 0rem 0rem;
+    margin: 5rem 0rem 0rem 0rem;
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import styles from "./page.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -87,11 +87,11 @@ export default function EventsClient() {
 
   useEffect(() => {
     // Wait for auth to resolve first since /events requires verifyLogin
-    if (!authLoading) {
+    if (!authLoading && user) {
       console.log("About to load events");
       loadEvents(1);
     }
-  }, [authLoading, loadEvents]);
+  }, [authLoading, user, loadEvents]);
 
   //pagination handler
   function goToPage(page) {
@@ -109,6 +109,33 @@ export default function EventsClient() {
     setModalMode(null);
     setSelectedEvent(null);
   };
+
+  //Create Event
+  async function createEvent(eventData) {
+    try {
+      const res = await fetch(`${API_BASE}api/events/create`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventData),
+      });
+      const data = await res.json().catch(() => ({}));
+      console.log("Status:", res.status);
+      console.log("Data:", data);
+      if (!res.ok) {
+        throw new Error(
+          data.message || data.error || `Request failed (${res.status})`,
+        );
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Failed to update event:", error);
+      throw error;
+    }
+  }
 
   // Update Event
   async function updateEvent(eventId, eventData) {
@@ -231,16 +258,21 @@ export default function EventsClient() {
       </section>
       <section className={styles.list}>
         <div className={`container ${styles.listInner}`}>
-          {(authLoading || loading) && <p>Loading events…</p>}
-          {!authLoading && !loading && error && (
-            <p style={{ color: "crimson" }}>Couldn't load events: {error}</p>
-          )}
-          {!authLoading && !loading && !error && events.length === 0 && (
-            <p>No events scheduled right now — check back soon.</p>
-          )}
-          {!authLoading &&
-            !loading &&
-            !error &&
+          {authLoading ? (
+            <p className={styles.emptyEvents}>Loading…</p>
+          ) : !user ? (
+            <p className={styles.emptyEvents}>Log in to view our events.</p>
+          ) : loading ? (
+            <p className={styles.emptyEvents}>Loading events…</p>
+          ) : error ? (
+            <p className={styles.emptyEvents} style={{ color: "crimson" }}>
+              Couldn't load events: {error}
+            </p>
+          ) : events.length === 0 ? (
+            <p className={styles.emptyEvents}>
+              No events scheduled right now — check back soon.
+            </p>
+          ) : (
             events.map((ev) => {
               const { day, month, time } = splitDate(ev.date);
               return (
@@ -264,10 +296,16 @@ export default function EventsClient() {
                           <u>{ev.location}</u>
                         </span>
                       </Link>
-                      <span className={styles.metaDot} aria-hidden="true" />
-                      <span>
-                        {ev.registeredCount}/{ev.capacity} registered
-                      </span>
+
+                      {user?.role === "founder" && (
+                        <>
+                          <span className={styles.metaDot} aria-hidden="true" />
+
+                          <span>
+                            {ev.registeredCount}/{ev.capacity} registered
+                          </span>
+                        </>
+                      )}
                       {/* <span>Slots: {ev.capacity}</span>
                       <span className={styles.metaDot} aria-hidden="true" />
                       <span>Remaining: {ev.seatsLeft}</span> */}
@@ -302,12 +340,13 @@ export default function EventsClient() {
                     )}
                     {user?.role !== "founder" &&
                       (ev.isRegistered ? (
-                        <button
-                          className="btn btn-secondary"
-                          onClick={() => openModal("deregister", ev)}
-                        >
-                          DeRegister
-                        </button>
+                        // <button
+                        //   className="btn btn-secondary"
+                        //   onClick={() => openModal("deregister", ev)}
+                        // >
+                        //   DeRegister
+                        // </button>
+                        <></>
                       ) : (
                         <button
                           className="btn btn-primary"
@@ -319,8 +358,9 @@ export default function EventsClient() {
                   </div>
                 </article>
               );
-            })}
-          {!authLoading && !loading && !error && totalPages > 1 && (
+            })
+          )}
+          {!authLoading && user && !loading && !error && totalPages > 1 && (
             <div
               style={{
                 display: "flex",
@@ -394,10 +434,36 @@ export default function EventsClient() {
             await loadEvents(currentPage);
           } catch (err) {
             console.error(err);
-            alert(err.message);
+          }
+        }}
+        onCreate={async (form) => {
+          try {
+            await createEvent(form);
+            closeModal();
+            await loadEvents(currentPage);
+          } catch (err) {
+            console.error(err);
           }
         }}
       />
+      {user?.role === "founder" && (
+        <button
+          className={`${styles.addEventBtn}`}
+          onClick={() =>
+            openModal("create", {
+              title: "",
+              date: "",
+              location: "",
+              locationLink: "",
+              capacity: "",
+              description: "",
+            })
+          }
+          aria-label="Add event"
+        >
+          +
+        </button>
+      )}
       <Footer />
     </>
   );

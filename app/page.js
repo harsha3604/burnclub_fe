@@ -22,13 +22,6 @@ const FEATURES = [
   },
 ];
 
-const STATS = [
-  { value: "12", unit: "YRS", label: "On the gym floor" },
-  { value: "40+", unit: "WK", label: "Classes running weekly" },
-  { value: "1,200", unit: "MEM", label: "Active members" },
-  { value: "5", unit: "CO", label: "Certified coaches" },
-];
-
 export default function HomePage() {
   return (
     <>
@@ -68,18 +61,6 @@ export default function HomePage() {
           </div>
         </div>
         <div className="stripe-divider" />
-      </section>
-
-      <section className={styles.stats}>
-        <div className={`container ${styles.statsGrid}`}>
-          {STATS.map((s) => (
-            <div key={s.label} className={styles.statCard}>
-              <span className={styles.statUnit}>{s.unit}</span>
-              <span className={styles.statValue}>{s.value}</span>
-              <span className={styles.statLabel}>{s.label}</span>
-            </div>
-          ))}
-        </div>
       </section>
 
       <section className={styles.about}>

@@ -2,7 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--ink);
+  background: #212121;
   border-bottom: 1px solid var(--steel-line);
 }
 
@@ -27,7 +27,7 @@
 .logoMark {
   width: 12px;
   height: 12px;
-  background: var(--ember);
+  background: #CC5500;
   transform: rotate(45deg);
   flex-shrink: 0;
 }
@@ -120,7 +120,7 @@
 .navMobile {
   max-height: 0;
   overflow: hidden;
-  background: var(--ink);
+  background: #212121;
   border-bottom: 1px solid transparent;
   transition: max-height 0.3s ease;
 }
@@ -191,7 +191,7 @@
   top: calc(100% + 12px);
   right: 0;
   min-width: 180px;
-  background: var(--ink);
+  background: #212121;
   border: 1px solid var(--steel-line);
   box-shadow: 0 12px 32px rgba(0,0,0,.35);
   z-index: 200;

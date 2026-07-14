@@ -3,8 +3,7 @@ import styles from "./Footer.module.css";
 
 const SOCIALS = [
   { label: "Instagram", href: "https://instagram.com/yourhandle" },
-  { label: "Facebook", href: "https://facebook.com/yourpage" },
-  { label: "YouTube", href: "https://youtube.com/@yourchannel" },
+  { label: "Whatsapp", href: "Whatsapp Link" },
 ];
 
 export default function Footer() {
@@ -28,9 +27,18 @@ export default function Footer() {
 
         <div className={styles.col}>
           <span className={styles.colTitle}>Quick links</span>
-          <Link href="/" className={styles.link}>Home</Link>
-          <Link href="/events" className={styles.link}>Events</Link>
-          <Link href="/contact" className={styles.link}>Contact Us</Link>
+          <Link href="/" className={styles.link}>
+            Home
+          </Link>
+          <Link href="/events" className={styles.link}>
+            Events
+          </Link>
+          <Link href="/contact" className={styles.link}>
+            Contact Us
+          </Link>
+          <Link href="/about" className={styles.link}>
+            About Us
+          </Link>
         </div>
 
         <div className={styles.col}>

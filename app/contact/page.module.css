@@ -30,6 +30,7 @@
 
 .body {
   padding: 56px 0 96px;
+  align-items: center;
 }
 
 .grid {

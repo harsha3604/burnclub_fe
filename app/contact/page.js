@@ -30,41 +30,6 @@ const SOCIALS = [
     ),
   },
   {
-    label: "Facebook",
-    handle: "/forgeathleticclub",
-    href: "https://facebook.com/yourpage",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        width="22"
-        height="22"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      >
-        <path d="M14 8.5h2.5V5h-2.5c-2.2 0-4 1.8-4 4v2H8v3.5h2.5V21h3.5v-6.5H16.5L17 11h-3v-1.7c0-.7.5-.8.9-.8Z" />
-      </svg>
-    ),
-  },
-  {
-    label: "YouTube",
-    handle: "Forge Athletic Club",
-    href: "https://youtube.com/@yourchannel",
-    icon: (
-      <svg
-        viewBox="0 0 24 24"
-        width="22"
-        height="22"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      >
-        <rect x="3" y="6" width="18" height="12" rx="3" />
-        <path d="M11 9.8v4.4l3.8-2.2Z" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-  {
     label: "WhatsApp",
     handle: "+1 (555) 010-0199",
     href: "https://wa.me/15550100199",
@@ -142,16 +107,6 @@ export default function ContactPage() {
               </li>
             ))}
           </ul>
-
-          <aside className={styles.infoCard}>
-            <span className={styles.infoTitle}>Visit the floor</span>
-            <p className={styles.infoLine}>221 Iron Row, Suite 4</p>
-            <p className={styles.infoLine}>Bengaluru, Karnataka</p>
-            <div className={styles.hr} />
-            <span className={styles.infoTitle}>Hours</span>
-            <p className={styles.infoLine}>Mon–Fri: 5:00 AM – 10:00 PM</p>
-            <p className={styles.infoLine}>Sat–Sun: 7:00 AM – 6:00 PM</p>
-          </aside>
         </div>
       </section>
       <Footer />

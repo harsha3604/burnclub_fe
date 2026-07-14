@@ -12,6 +12,7 @@ export default function EventModal({
   onCancel,
   onRegister,
   onDeRegister,
+  onCreate,
 }) {
   const [form, setForm] = useState({
     title: "",
@@ -50,6 +51,78 @@ export default function EventModal({
         <button className={styles.close} onClick={onClose}>
           ✕
         </button>
+        {/* CREATE */}
+
+        {mode === "create" && (
+          <>
+            <h2>Create Event</h2>
+
+            <label className={styles.field}>
+              Title
+              <input name="title" value={form.title} onChange={handleChange} />
+            </label>
+
+            <label className={styles.field}>
+              Date &amp; time
+              <input
+                type="datetime-local"
+                name="date"
+                value={form.date}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label className={styles.field}>
+              Location
+              <input
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label className={styles.field}>
+              Location Link
+              <input
+                name="locationLink"
+                value={form.locationLink}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label className={styles.field}>
+              Capacity
+              <input
+                type="number"
+                name="capacity"
+                value={form.capacity}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label className={styles.field}>
+              Description
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+              />
+            </label>
+
+            <div className={styles.actions}>
+              <button
+                className="btn btn-primary"
+                onClick={() => onCreate(form)}
+              >
+                Create
+              </button>
+
+              <button className="btn btn-secondary" onClick={onClose}>
+                Cancel
+              </button>
+            </div>
+          </>
+        )}
 
         {/* VIEW */}
 
@@ -88,46 +161,57 @@ export default function EventModal({
           <>
             <h2>Update Event</h2>
 
-            <input
-              name="title"
-              value={form.title}
-              onChange={handleChange}
-              placeholder="Title"
-            />
+            <label className={styles.field}>
+              Title
+              <input name="title" value={form.title} onChange={handleChange} />
+            </label>
 
-            <input
-              type="datetime-local"
-              name="date"
-              value={form.date}
-              onChange={handleChange}
-            />
+            <label className={styles.field}>
+              Date &amp; time
+              <input
+                type="datetime-local"
+                name="date"
+                value={form.date}
+                onChange={handleChange}
+              />
+            </label>
 
-            <input
-              name="location"
-              value={form.location}
-              onChange={handleChange}
-              placeholder="Location"
-            />
+            <label className={styles.field}>
+              Location
+              <input
+                name="location"
+                value={form.location}
+                onChange={handleChange}
+              />
+            </label>
 
-            <input
-              name="locationLink"
-              value={form.locationLink}
-              onChange={handleChange}
-              placeholder="Location Link"
-            />
+            <label className={styles.field}>
+              Location Link
+              <input
+                name="locationLink"
+                value={form.locationLink}
+                onChange={handleChange}
+              />
+            </label>
 
-            <input
-              type="number"
-              name="capacity"
-              value={form.capacity}
-              onChange={handleChange}
-            />
+            <label className={styles.field}>
+              Capacity
+              <input
+                type="number"
+                name="capacity"
+                value={form.capacity}
+                onChange={handleChange}
+              />
+            </label>
 
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-            />
+            <label className={styles.field}>
+              Description
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+              />
+            </label>
 
             <div className={styles.actions}>
               <button className="btn btn-primary" onClick={() => onSave(form)}>
@@ -169,6 +253,8 @@ export default function EventModal({
           </>
         )}
 
+        {/* REGISTER */}
+
         {mode === "register" && (
           <>
             <h2>{event.title}</h2>
@@ -189,6 +275,8 @@ export default function EventModal({
             </div>
           </>
         )}
+
+        {/* DEREGISTER */}
 
         {mode === "deregister" && (
           <>

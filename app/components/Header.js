@@ -10,7 +10,6 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Events" },
   { href: "/contact", label: "Contact Us" },
-  { href: "/signup", label: "Sign Up" },
 ];
 
 export default function Header() {
@@ -41,7 +40,8 @@ export default function Header() {
           aria-label="Forge Athletic Club home"
         >
           <span className={styles.logoMark} aria-hidden="true" />
-          FORGE<span className={styles.logoSub}>ATHLETIC CLUB</span>
+          BENGALURU BURN CLUB
+          <span className={styles.logoSub}>ATHLETIC CLUB</span>
         </Link>
 
         {/* Desktop Navigation */}
