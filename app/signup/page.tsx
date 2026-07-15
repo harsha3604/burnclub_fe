@@ -3,19 +3,21 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@headlessui/react";
 import styles from "./page.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-//random comment
-
 export default function SignupPage() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
@@ -33,55 +35,61 @@ export default function SignupPage() {
     router.push("/login");
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setImageFile(file);
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    } else {
+      setImagePreview(null);
+    }
+  };
+
   const signup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const updateDetails = {
-      userName: userName,
-      email: email,
-      password: password,
-    };
 
-    if (
-      !updateDetails.userName ||
-      !updateDetails.email ||
-      !updateDetails.password
-    ) {
+    if (!userName || !email || !password) {
       setMessage("One of the fields is empty");
       setShowModal(true);
       return;
-    } else {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_FRONTEND_URL}api/users/create`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updateDetails),
-          },
-        );
+    }
 
-        if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-        }
+    const formData = new FormData();
+    formData.append("userName", userName);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("age", age);
+    formData.append("gender", gender);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
 
-        const data = await response.json();
-        setMessage(data.message);
-        setShowModal(true);
-        return;
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}api/users/create`,
+        {
+          method: "POST",
+          // No Content-Type header — the browser sets the correct
+          // multipart/form-data boundary automatically for FormData.
+          body: formData,
+        },
+      );
 
-        console.log(data);
-
-        // Optionally show success message
-      } catch (error) {
-        console.error(error);
-        setMessage("Something went wrong. Please try again.");
-        setShowModal(true);
-        return;
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
       }
+
+      const data = await response.json();
+      setMessage(data.message);
+      setShowModal(true);
+    } catch (error) {
+      console.error(error);
+      setMessage("Something went wrong. Please try again.");
+      setShowModal(true);
     }
   };
+
   return (
     <>
       <Header />
@@ -96,7 +104,6 @@ export default function SignupPage() {
               <label htmlFor="username" className={styles.label}>
                 Username
               </label>
-
               <input
                 id="username"
                 name="username"
@@ -112,7 +119,6 @@ export default function SignupPage() {
               <label htmlFor="email" className={styles.label}>
                 Email Address
               </label>
-
               <input
                 id="email"
                 name="email"
@@ -128,7 +134,6 @@ export default function SignupPage() {
               <label htmlFor="password" className={styles.label}>
                 Password
               </label>
-
               <div className={styles.passwordWrapper}>
                 <input
                   id="password"
@@ -139,13 +144,89 @@ export default function SignupPage() {
                   placeholder="Create a password"
                   className={styles.input}
                 />
-
                 <Button
                   type="button"
                   onClick={togglePasswordVisibility}
                   className={styles.eyeButton}
                 ></Button>
               </div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="phoneNumber" className={styles.label}>
+                Phone Number
+              </label>
+              <input
+                id="phoneNumber"
+                name="phoneNumber"
+                type="tel"
+                autoComplete="tel"
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Enter your phone number"
+                className={styles.input}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="age" className={styles.label}>
+                Age
+              </label>
+              <input
+                id="age"
+                name="age"
+                type="number"
+                min="1"
+                onChange={(e) => setAge(e.target.value)}
+                placeholder="Enter your age"
+                className={styles.input}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="gender" className={styles.label}>
+                Gender
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                onChange={(e) => setGender(e.target.value)}
+                className={styles.input}
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Select gender
+                </option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="image" className={styles.label}>
+                Profile Image
+              </label>
+              <input
+                id="image"
+                name="image"
+                type="file"
+                accept="image/png, image/jpeg, image/webp, image/gif"
+                onChange={handleImageChange}
+                className={styles.input}
+              />
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  style={{
+                    marginTop: "0.5rem",
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                />
+              )}
             </div>
 
             <Button type="submit" className={styles.signUpButton}>
@@ -168,14 +249,11 @@ export default function SignupPage() {
           <div className={styles.modalOverlay}>
             <div className={styles.modal}>
               <h3 className={styles.modalTitle}>Notice</h3>
-
               <p className={styles.modalMessage}>{message}</p>
-
               <div className={styles.modalActions}>
                 <button onClick={handleStay} className={styles.modalButton}>
                   Stay Here
                 </button>
-
                 <button onClick={handleGoBack} className={styles.modalButton}>
                   Login
                 </button>

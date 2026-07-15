@@ -5,7 +5,7 @@
 }
 
 .card {
-  max-width: 720px;
+  max-width: 900px;
   margin: 0 auto;
   background: var(--chalk);
   border: 1px solid var(--steel-line);
@@ -23,6 +23,58 @@
   font-size: 2rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 0;
+}
+
+.imageCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  border-right: 1px solid var(--steel-line);
+  background: var(--paper);
+}
+
+.avatarButton {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: transform 0.15s ease;
+  width: 100%;
+}
+
+.avatarButton:hover {
+  transform: scale(1.02);
+}
+
+.avatar {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid var(--steel-line);
+  display: block;
+}
+
+.avatarFallback {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  background: var(--ink);
+  color: var(--chalk);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 4rem;
+  border: 2px solid var(--steel-line);
 }
 
 .info {
@@ -72,6 +124,42 @@
   color: var(--ink);
 }
 
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: zoom-out;
+}
+
+.lightboxImage {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: var(--chalk, #fff);
+  color: var(--ink, #111);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 640px) {
   .profile {
     padding: 32px 0;
@@ -84,6 +172,21 @@
   .title {
     padding: 20px 24px;
     font-size: 1.6rem;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .imageCol {
+    border-right: none;
+    border-bottom: 1px solid var(--steel-line);
+    padding: 32px;
+  }
+
+  .avatarButton {
+    max-width: 200px;
+    margin: 0 auto;
   }
 
   .info {

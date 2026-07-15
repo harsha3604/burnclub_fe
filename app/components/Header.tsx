@@ -12,6 +12,13 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact Us" },
 ];
 
+const API_BASE = process.env.NEXT_PUBLIC_FRONTEND_URL || "";
+
+function getImageSrc(image?: string | null) {
+  if (!image) return null;
+  return `${API_BASE}${image.replace(/^\//, "")}`;
+}
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -20,7 +27,6 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Close mobile menu and dropdown on route change
   useEffect(() => {
     setOpen(false);
     setDropdownOpen(false);
@@ -30,6 +36,8 @@ export default function Header() {
     await logout();
     router.push("/login");
   };
+
+  const imageSrc = getImageSrc(user?.image);
 
   return (
     <header className={styles.header}>
@@ -67,7 +75,17 @@ export default function Header() {
                   }`}
                   onClick={() => setDropdownOpen((prev) => !prev)}
                 >
-                  {user.userName}
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc}
+                      alt={user.userName}
+                      className={styles.userAvatar}
+                    />
+                  ) : (
+                    <span className={styles.userAvatarFallback}>
+                      {user.userName?.[0]?.toUpperCase() || "?"}
+                    </span>
+                  )}
                 </button>
 
                 {dropdownOpen && (
@@ -137,7 +155,17 @@ export default function Header() {
           (user ? (
             <>
               <Link href="/profile" className={styles.navMobileLink}>
-                <span className={styles.navMobileIndex}>04</span>
+                <span className={styles.navMobileIndex}>
+                  {imageSrc ? (
+                    <img
+                      src={imageSrc}
+                      alt={user.userName}
+                      className={styles.navMobileAvatar}
+                    />
+                  ) : (
+                    "04"
+                  )}
+                </span>
                 Profile
               </Link>
 

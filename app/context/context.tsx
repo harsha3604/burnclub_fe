@@ -12,6 +12,11 @@ interface User {
   id: number;
   userName: string;
   email: string;
+  role: "founder" | "member";
+  phoneNumber?: string | null;
+  age?: number | null;
+  image?: string | null;
+  gender?: "male" | "female" | "other" | null;
 }
 
 interface AuthContextType {
